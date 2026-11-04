@@ -1,0 +1,46 @@
+
+<div class="head"><div><h1 class="page">Today</h1><div class="sub" id="date"></div></div>
+<div class="hactions"><details class="menu" id="awaymenu"><summary class="btn">Log time away from the computer</summary>
+<form class="pop form" id="awayform">
+<label class="field">Date<input type="date" id="a_date" required></label>
+<label class="field">Starts at<input type="time" id="a_start" required value="09:00"></label>
+<label class="field">Length (minutes)<input type="number" id="a_mins" min="5" max="720" step="5" value="60" required></label>
+<label class="field">What was it<select id="a_kind"><option value="meeting">In-person meeting</option><option value="event">Org event</option><option value="training">Training</option><option value="other">Other work away from the computer</option></select></label>
+<label class="field">Counts as<select id="a_cat"></select></label>
+<label class="field">Note (optional)<input type="text" id="a_note" maxlength="60" placeholder="Quarterly all-hands"></label>
+<div class="row"><button class="primary" type="submit">Save</button><span class="msg" id="a_msg" role="status"></span></div>
+<div class="hint">Counts like time at the computer: it uses tokens. Don't also log time you were on the computer.</div></form></details>
+<details class="menu" id="offmenu"><summary class="btn">Add leave or a day off</summary>
+<form class="pop form" id="offform">
+<label class="field">Date<input type="date" id="o_date" required></label>
+<label class="field">Type<select id="o_type"><option value="leave">Leave</option><option value="holiday">Holiday</option><option value="sick">Sick day</option><option value="none">Remove leave or day off</option></select></label>
+<label class="field" id="o_lwrap">How much<select id="o_len"><option value="day">Whole day</option><option value="part">Part of the day</option></select></label>
+<label class="field" id="o_hwrap" hidden>Hours away<input type="number" id="o_hours" min="0.25" max="24" step="0.25" value="2"></label>
+<div class="row"><button class="primary" type="submit">Save</button><span class="msg" id="o_msg" role="status"></span></div>
+<div class="hint">For several days at once, use Settings, Days off.</div></form></details>
+<div class="chip" id="chip"><i class="dot" id="dot"></i><span id="chiptext">Connecting</span></div></div></div>
+<div class="err" id="err" role="alert"></div>
+<div class="banner info" id="offbanner" hidden><span class="ico info">i</span><span id="offtext"></span><button type="button" id="offremove">Remove day off</button></div>
+<div class="banner info" id="alertbar" hidden><span class="ico info">!</span><span><b id="altitle"></b> <span id="altext"></span></span><button type="button" id="aldismiss">Dismiss</button></div>
+<div class="banner" id="banner" hidden><span class="ico crit">&#10005;</span><span>You have used all your weekly tokens. Time to stop for the week.</span></div>
+<section class="meter" aria-label="Weekly tokens">
+<div class="meter-top"><span>Tokens left this week</span><span class="pill" id="pill"></span></div>
+<div class="count" id="count" aria-live="off">-</div>
+<div class="count-sub" id="countsub"></div>
+<div class="fuel" id="fuel" role="img" aria-label="Share of the weekly budget used"><i id="fuelfill"></i></div>
+<div class="fuel-note" id="fuelnote"></div>
+<div class="facts">
+<div class="fact"><div class="v" id="f1">-</div><div class="l" id="f1l">Used this week</div></div>
+<div class="fact"><div class="v" id="f2">-</div><div class="l" id="f2l">Today</div></div>
+<div class="fact"><div class="v" id="f3">-</div><div class="l" id="f3l">Left in full days</div></div>
+</div></section>
+<section class="panel"><h2>Today by category</h2><div class="note">Open a category to see its dashboard.</div>
+<div id="segbar"></div><div class="legend" id="legend"></div>
+<div id="crows"></div></section>
+<div class="grid2">
+<section class="panel"><h2>This week</h2><div class="note">Hours per day by category. The line is your daily budget.</div><div class="legend" id="wlegend"></div><div class="chart" id="week"></div></section>
+<section class="panel"><h2>Top apps today</h2><div class="note">Counted only while you are active.</div><div id="apps"></div></section>
+</div>
+<section class="panel" id="acard" hidden><h2>Away from the computer today</h2><div class="note">Counted as work and included in your tokens.</div><div id="aways"></div></section>
+<section class="panel" id="wcard" hidden><h2>Top websites today</h2><div class="note">Website names only, never the page. Counted only while you are active in a browser.</div><div id="webs"></div></section>
+<section class="panel" id="tcard" hidden><h2>Top windows today</h2><div id="titles"></div></section>

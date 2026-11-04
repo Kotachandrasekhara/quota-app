@@ -1,0 +1,46 @@
+
+<div class="head"><div><h1 class="page">Settings</h1><div class="sub">Changes apply as soon as you save. No restart needed.</div></div></div>
+<section class="panel"><h2>Your budget</h2><div class="note">Your weekly tokens are daily hours times workdays, unless you set a weekly limit.</div>
+<div class="fgrid">
+<label class="field">Daily hours<input type="number" step="0.1" min="0.5" max="24" id="c_daily_hours"></label>
+<div class="field">Working days<div class="daychecks" id="workdays"></div></div>
+<label class="field">Weekly hours limit (leave blank to use daily x workdays)<input type="number" step="0.5" min="1" max="168" id="c_weekly_hours"></label>
+</div></section>
+<section class="panel"><h2>Days off</h2><div class="note">Holidays, leave and sick days remove that day's share from your weekly tokens. Enter hours to take only part of a day (a 2 hour appointment, say). Pick any date, past or coming up.</div>
+<div class="fgrid">
+<label class="field">From<input type="date" id="off_from"></label>
+<label class="field">To (leave empty for one day)<input type="date" id="off_to"></label>
+<label class="field">Type<select id="off_type"><option value="holiday">Holiday</option><option value="leave">Leave</option><option value="sick">Sick day</option></select></label>
+<label class="field">Hours away (leave empty for the whole day)<input type="number" id="off_hours" min="0.25" max="24" step="0.25" placeholder="Whole day"></label>
+</div>
+<label class="check"><input type="checkbox" id="off_wd" checked><span>Only mark my working days<small>Skips weekends and any other day you don't work.</small></span></label>
+<p><button class="primary" id="off_add" type="button">Mark as days off</button> <span class="msg" id="off_msg" role="status"></span></p>
+<div id="off_list"></div></section>
+<section class="panel"><h2>Time away from the computer</h2><div class="note">In-person meetings and org events you logged on the Today page. They count as work and use tokens. Remove a mistake here.</div>
+<div id="away_list"></div><span class="msg" id="away_msg" role="status"></span></section>
+<section class="panel"><h2>Reminders</h2>
+<div class="fgrid">
+<label class="field">Pause tokens after no input for (minutes)<input type="number" step="1" min="1" max="120" id="c_idle_minutes"></label>
+<label class="field">Remind me while I work every (minutes)<input type="number" step="5" min="5" max="480" id="c_remind_every_minutes"></label>
+<label class="field">Remind me every (minutes) once tokens run out<input type="number" step="1" min="1" max="120" id="c_overtime_remind_minutes"></label>
+<label class="field">Remind me every (minutes) while Private mode is on<input type="number" step="5" min="5" max="480" id="c_private_remind_minutes"></label>
+<label class="field">Warn me at these percentages of the week<input type="text" id="c_alert_percents" placeholder="50, 75, 90, 100"></label>
+</div>
+<p><button id="testnotify" type="button">Send a test reminder</button> <span class="msg" id="test_msg" role="status"></span></p>
+<div class="note">Reminders show as a pop-up from your computer and as a banner on the Today page. If the pop-up doesn't appear, check your system notification settings for your terminal or Python.</div></section>
+<section class="panel"><h2>What Quota records</h2><div class="note">Everything stays in a file on this computer. Nothing is sent anywhere. For anything personal, use Private mode (the switch in the top bar). It stops all recording and is always off when Quota starts.</div>
+<label class="check"><input type="checkbox" id="c_track_categories"><span>Sort my time into categories<small>Stores seconds per category per day.</small></span></label>
+<label class="check"><input type="checkbox" id="c_classify_by_title"><span>Use browser tab titles to pick the category<small>Tells a Google Meet tab from a Google Docs tab. Titles are read to decide the category and are not saved.</small></span></label>
+<label class="check"><input type="checkbox" id="c_track_apps"><span>Record which apps I use<small>Stores the app name only.</small></span></label>
+<label class="check"><input type="checkbox" id="c_track_domains"><span>Record which websites I visit<small>Stores the website name only (like docs.google.com), never the page or address. It also helps pick the category. Nothing to install: Quota reads the address bar on Windows, and asks Chrome, Edge, Brave, Arc or Safari on a Mac (macOS asks permission once). Not available on Linux.</small></span></label>
+<label class="check"><input type="checkbox" id="c_track_titles"><span>Also save window titles<small>Shows exactly which page or document. Titles can be private, so this is off by default.</small></span></label>
+</section>
+<section class="panel"><h2>Categories</h2>
+<div class="note">One line per category, in the form <b>Name: app, app, app</b>. An app matches when its name starts with a keyword. Up to six categories. Anything that matches none is counted as Other.</div>
+<textarea id="categories_text" spellcheck="false" aria-label="Categories and app keywords"></textarea>
+<div class="note" style="margin-top:14px">Browser tab keywords. One line per category, same format. These only apply to the browsers listed below, and they win over the app rules.</div>
+<textarea id="titles_text" spellcheck="false" style="min-height:110px" aria-label="Browser tab keywords"></textarea>
+<label class="field" style="margin-top:14px">Browsers (comma separated)<input type="text" id="browsers_text"></label>
+<p><button id="defaults" type="button">Reset category rules to defaults</button></p>
+</section>
+<div class="savebar"><button class="primary" id="save">Save changes</button><span class="msg" id="msg" role="status"></span></div>

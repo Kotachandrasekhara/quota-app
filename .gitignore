@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+dist/
+.venv/
+.DS_Store
+# Quota's own data lives in ~/.quota, but keep any local copy out of git just in case
+data.json
+data.json.*

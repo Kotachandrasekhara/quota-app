@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quota-time-tracker"
+version = "1.0.0"
+description = "Your week, metered in tokens: 1 token = 1 second of active computer time."
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = []  # standard library only
+
+[project.scripts]
+quota = "quota.server:main"
+
+[tool.setuptools]
+packages = ["quota"]
+
+[tool.setuptools.package-data]
+quota = ["web/*", "web/pages/*"]
