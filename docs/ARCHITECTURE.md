@@ -25,6 +25,8 @@ Everything is stored in one JSON file, `~/.quota/data.json`. Nothing leaves the 
 | `reports.py` | History, rankings and CSV export for the Dashboards page. |
 | `settings.py` | Checks and applies the Settings form. |
 | `demo.py` | Sample history for `python -m quota --demo`. |
+| `autostart.py` | `python -m quota install`: the macOS login job (launchd) and Quota.app for the Dock. |
+| `icon.py` | Draws the app icon as a PNG (no image library). Served as `/icon.png` and used for Quota.app. |
 | `web.py` | Builds the pages from the files in `quota/web/`. |
 | `server.py` | The HTTP handler (pages and `/api/...`) and `main()`. |
 

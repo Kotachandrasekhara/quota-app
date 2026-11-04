@@ -44,6 +44,16 @@ class ApiTests(unittest.TestCase):
             self.assertEqual(code, 200, path)
             self.assertNotIn("%%", html)
 
+    def test_app_icon_and_manifest(self):
+        conn = http.client.HTTPConnection("127.0.0.1", config.PORT, timeout=10)
+        conn.request("GET", "/icon.png")
+        r = conn.getresponse()
+        self.assertEqual((r.status, r.read()[:4]), (200, b"\x89PNG"))
+        conn.close()
+        code, manifest = self.call("GET", "/manifest.webmanifest")
+        self.assertEqual((code, manifest["name"]), (200, "Quota"))
+        self.assertIn("/manifest.webmanifest", self.call("GET", "/")[1])
+
     def test_other_websites_and_hosts_are_refused(self):
         self.assertEqual(self.call("POST", "/api/pause", {"paused": True}, {"Origin": "http://evil.example"})[0], 403)
         self.assertEqual(self.call("POST", "/api/pause", {"paused": True}, ctype="text/plain")[0], 403)

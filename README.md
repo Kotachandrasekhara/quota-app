@@ -94,11 +94,34 @@ want titles kept. Turn off "Record which apps I use" to keep only category total
 
 The first run copies your history from `~/.tokentime/data.json`. Old days are sorted into categories by app name.
 
-## Start at login (optional)
+## Run it in the background and keep it in the Dock (macOS)
 
-- Windows: put a shortcut to `pythonw -m quota --no-browser` in `shell:startup`
-- macOS: add it as a Login Item or a launchd agent
-- Linux: add it to your desktop's startup applications
+```
+python -m quota install
+```
+
+This does two things:
+
+1. **Starts Quota by itself every time you log in**, in the background, with no browser tab and no terminal.
+   It is a standard macOS login job (`~/Library/LaunchAgents/com.quota.tracker.plist`) that restarts Quota if it
+   ever stops. Log file: `~/Library/Logs/Quota.log`.
+2. **Adds Quota.app to `~/Applications`**. Open it to start Quota if needed and show the dashboard in its own window
+   (Chrome, Edge or Brave in app mode, otherwise your browser). Drag it to the Dock to keep it there.
+
+Remove both with `python -m quota uninstall` (your data in `~/.quota` stays).
+
+Notes:
+- macOS may ask once to let Python control "System Events" (to see the front app) and to show notifications.
+  Allow both. If reminders don't appear, check System Settings, Notifications.
+- The install uses the Python you run it with. If you later move the project folder or change Python, run
+  `python -m quota install` again.
+- Prefer the dashboard to have its own Dock icon? Open http://127.0.0.1:8765 in Chrome, choose
+  "Cast, save and share", then "Install page as app" (or Create shortcut, "Open as window"). In Safari 17 or newer,
+  use File, "Add to Dock".
+- Quota doesn't put an icon in the menu bar, since that needs an extra package. The Dock app and the browser tab are
+  the way in.
+- **Windows:** put a shortcut to `pythonw -m quota --no-browser` in `shell:startup`.
+  **Linux:** add `python3 -m quota --no-browser` to your startup applications.
 
 ## Upgrading from the four-category version
 

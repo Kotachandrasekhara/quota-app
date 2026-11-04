@@ -22,6 +22,7 @@ from .status import compute_status, fmt
 from .store import init, DATA, save
 from .system import idle_seconds, notify
 from .tracker import tracker
+from .icon import png
 from .web import PAGES
 
 
@@ -199,6 +200,15 @@ class Handler(BaseHTTPRequestHandler):
                 body = export_csv(start, end, kind).encode("utf-8-sig")  # BOM so Excel reads UTF-8
             return self._send(200, body, "text/csv; charset=utf-8",
                               {"Content-Disposition": f'attachment; filename="quota-{kind}-{start}_{end}.csv"'})
+        if path in ("/icon.png", "/icon-192.png"):  # the app icon, for "Add to Dock" and "Install as app"
+            return self._send(200, png(512 if path == "/icon.png" else 192), "image/png",
+                              {"Cache-Control": "max-age=86400"})
+        if path == "/manifest.webmanifest":
+            manifest = {"name": "Quota", "short_name": "Quota", "start_url": "/", "scope": "/", "display": "standalone",
+                        "background_color": "#f2f2f2", "theme_color": "#6250d6",
+                        "icons": [{"src": "/icon-192.png", "sizes": "192x192", "type": "image/png"},
+                                  {"src": "/icon.png", "sizes": "512x512", "type": "image/png"}]}
+            return self._send(200, json.dumps(manifest).encode(), "application/manifest+json")
         page = PAGES.get(path)
         if page is None:
             return self._json(404, {"error": "not found"})
@@ -206,6 +216,9 @@ class Handler(BaseHTTPRequestHandler):
 
 
 def main():
+    if len(sys.argv) > 1 and sys.argv[1] in ("install", "uninstall"):
+        from . import autostart
+        sys.exit(autostart.run(sys.argv[1]))
     init()
     if DEMO and not DATA["days"]:
         seed_demo()
