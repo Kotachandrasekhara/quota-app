@@ -82,7 +82,7 @@ button:hover,.btn:hover{background:var(--grid)}
 button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 button.primary{background:var(--brand);color:var(--onbrand);border-color:var(--brand);font-weight:600}
 button.primary:hover{filter:brightness(1.08);background:var(--brand)}
-input[type=date],input[type=time],input[type=number],input[type=text],textarea{font:inherit;font-size:14px;color:var(--ink);background:var(--surface);border:1px solid color-mix(in srgb,var(--ink) 25%,transparent);border-radius:8px;padding:8px 10px}
+input[type=date],input[type=time],input[type=number],input[type=text],input[type=url],input[type=password],textarea{font:inherit;font-size:14px;color:var(--ink);background:var(--surface);border:1px solid color-mix(in srgb,var(--ink) 25%,transparent);border-radius:8px;padding:8px 10px}
 .spacer{flex:1}
 .big{font-size:clamp(44px,8vw,64px);line-height:1.05;font-weight:600;letter-spacing:-.04em}
 .reporthead{display:flex;gap:32px;align-items:flex-end;flex-wrap:wrap;margin-bottom:6px}
@@ -136,6 +136,23 @@ details.menu .pop.form .field input,details.menu .pop.form .field select{width:1
 details.menu .pop.form button.primary{background:var(--brand);color:var(--onbrand);text-align:center;padding:8px 16px;border-radius:8px}
 details.menu .pop.form .row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .hint{font-size:13px;color:var(--mut)}
+.chatbox{display:flex;flex-direction:column;gap:14px}
+.msgs{display:flex;flex-direction:column;gap:14px;min-height:120px}
+.msg-row{display:flex}.msg-row.me{justify-content:flex-end}
+.bubble{max-width:min(720px,92%);padding:12px 16px;border-radius:14px;line-height:1.5;font-size:15px;overflow-wrap:anywhere}
+.me .bubble{background:var(--brand);color:var(--onbrand);border-bottom-right-radius:4px;white-space:pre-wrap}
+.bot .bubble{background:var(--surface);border:1px solid var(--ring);border-bottom-left-radius:4px}
+.bubble p{margin:0 0 8px}.bubble p:last-child,.bubble ul:last-child,.bubble ol:last-child{margin-bottom:0}
+.bubble ul,.bubble ol{margin:0 0 8px;padding-left:22px}.bubble code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;background:var(--grid);padding:1px 5px;border-radius:4px}
+.bubble table{border-collapse:collapse;font-size:13px;margin:4px 0 8px}.bubble th,.bubble td{border-bottom:1px solid var(--grid);padding:4px 10px;text-align:left}
+.bubble.err{border-color:var(--crit);color:var(--ink)}
+.bubble.wait::after{content:"";display:inline-block;width:8px;height:8px;margin-left:4px;border-radius:50%;background:var(--mut);animation:blink 1s infinite}
+@keyframes blink{50%{opacity:.2}}
+.chips{display:flex;gap:8px;flex-wrap:wrap}.chips button{border-radius:999px;font-size:14px}
+.composer{display:flex;gap:10px;align-items:flex-end}.composer textarea{flex:1;min-height:48px;max-height:160px;resize:vertical}
+.seen pre{white-space:pre-wrap;font-size:12.5px;background:var(--surface);border:1px solid var(--ring);border-radius:8px;padding:12px;max-height:340px;overflow:auto}
+.seen summary{cursor:pointer;color:var(--ink2);font-size:14px}
+@media (prefers-reduced-motion:reduce){.bubble.wait::after{animation:none}}
 select{font:inherit;font-size:14px;color:var(--ink);background:var(--surface);border:1px solid color-mix(in srgb,var(--ink) 25%,transparent);border-radius:8px;padding:8px 10px}
 .daychecks{display:flex;gap:8px;flex-wrap:wrap}
 .daychecks label{display:flex;align-items:center;gap:6px;border:1px solid var(--ring);border-radius:8px;padding:6px 10px;background:var(--surface);font-size:14px;color:var(--ink)}
@@ -143,6 +160,6 @@ select{font:inherit;font-size:14px;color:var(--ink);background:var(--surface);bo
 @media (prefers-reduced-motion:reduce){.fuel>i,#main,g.bar .fill{transition:none}}
 @media (max-width:720px){.grid2{grid-template-columns:1fr}.hactions{position:relative}details.menu{position:static}details.menu .pop{left:0;right:0;min-width:0}.facts{grid-template-columns:1fr;gap:16px}
 .fact{padding:0;border-left:0}.crow{grid-template-columns:1fr auto auto}.crow .go,.crow .wk{display:none}
-.bar{gap:12px;padding:0 16px}nav{gap:14px}.wrap{padding-left:16px;padding-right:16px}.tilegrid{min-width:0}
+.bar{gap:8px;padding:0 12px}nav{gap:10px}nav a{font-size:14px}.wrap{padding-left:16px;padding-right:16px}.tilegrid{min-width:0}
 .brand span,.switch span{display:none}.switch{padding:5px}}
 @media print{body{background:#fff}.top,.noprint{display:none!important}.panel{break-inside:avoid;border-color:#ccc}}

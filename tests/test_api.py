@@ -20,6 +20,7 @@ class ApiTests(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.httpd.shutdown()
+        cls.httpd.server_close()
 
     def setUp(self):
         self.data = support.reset()

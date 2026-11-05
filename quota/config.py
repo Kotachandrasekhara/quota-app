@@ -87,6 +87,11 @@ DEFAULT_CONFIG = {
     "track_apps": True,             # record which app you are in (app name only)
     "track_titles": False,          # also store window titles (more detail, more private: off)
     "track_domains": True,          # record the website (domain only, never the page) while a browser is in front
+    "ai_endpoint": "",              # Azure OpenAI endpoint for the Ask page, like https://name.openai.azure.com
+    "ai_deployment": "",            # the name of your chat model deployment
+    "ai_api_version": "2024-10-21",
+    "ai_key": "",                   # the API key (or set QUOTA_AI_KEY / AZURE_OPENAI_API_KEY); never shown again
+    "ai_share_sites": False,        # let the assistant see website names
     "categories": DEFAULT_CATEGORIES,
     "browsers": DEFAULT_BROWSERS,
 }

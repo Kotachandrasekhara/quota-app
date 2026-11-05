@@ -18,6 +18,19 @@
 <div id="off_list"></div></section>
 <section class="panel"><h2>Time away from the computer</h2><div class="note">In-person meetings and org events you logged on the Today page. They count as work and use tokens. Remove a mistake here.</div>
 <div id="away_list"></div><span class="msg" id="away_msg" role="status"></span></section>
+<section class="panel" id="ai"><h2>Ask Quota (Azure OpenAI)</h2>
+<div class="note">Connect your own Azure OpenAI deployment to chat about your time on the Ask page. Quota sends the model a short summary of your last 30 days (days, categories, apps) and your question. Window titles are never sent. The key stays on this computer in your data file, only you can read it, and it is never shown again here.</div>
+<div class="fgrid">
+<label class="field">Endpoint<input type="url" id="ai_endpoint" placeholder="https://your-resource.openai.azure.com" autocomplete="off" spellcheck="false"></label>
+<label class="field">Deployment name<input type="text" id="ai_deployment" placeholder="gpt-4o" autocomplete="off" spellcheck="false"></label>
+<label class="field">API key<input type="password" id="ai_key" autocomplete="new-password" spellcheck="false" placeholder="Paste your key"></label>
+</div>
+<details class="adv"><summary class="hint">Advanced</summary>
+<label class="field" style="max-width:260px;margin-top:8px">API version<input type="text" id="ai_version" placeholder="2024-10-21" autocomplete="off"></label>
+<div class="hint" style="margin-top:6px">You can also set the key with the QUOTA_AI_KEY or AZURE_OPENAI_API_KEY environment variable.</div></details>
+<label class="check"><input type="checkbox" id="ai_sites"><span>Let the assistant see website names<small>Adds your top websites (domains only) to the summary. Off by default.</small></span></label>
+<p><button class="primary" id="ai_save" type="button">Save</button> <button id="ai_test" type="button">Test connection</button> <button id="ai_clear" type="button">Remove saved key</button> <span class="msg" id="ai_msg" role="status"></span></p>
+</section>
 <section class="panel"><h2>Reminders</h2>
 <div class="fgrid">
 <label class="field">Pause tokens after no input for (minutes)<input type="number" step="1" min="1" max="120" id="c_idle_minutes"></label>

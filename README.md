@@ -37,6 +37,8 @@ It uses its own folder (`~/.quota-demo`), so your real data is never touched.
 - **Reminders:** notifications at 50, 75, 90 and 100% of the week, when the day is done, hourly while you
   work, and every 10 minutes once tokens run out.
   They show as a pop-up from your computer and as a banner on the Today page. Settings has a "Send a test reminder" button to check they work on your machine.
+- **Ask (chat with your data):** connect your own **Azure OpenAI** deployment and ask things like "where did my time
+  go this month?" or "plan the rest of my week". See [Ask Quota](#ask-quota-azure-openai) below.
 - **Reports:** download days or apps as CSV, or print / save as PDF from the Dashboards page.
 - **Days off and part-day leave:** use "Add leave or a day off" on the Today page, or Settings, Days off. Pick
   any date (past or coming up) and mark it Holiday, Leave or Sick day, for the whole day or for a few hours
@@ -83,10 +85,28 @@ its name starts with a keyword. You can have up to six categories (for example a
 History is sorted with the rules that applied when it was recorded. Days recorded before categories existed
 are sorted by app name.
 
+## Ask Quota (Azure OpenAI)
+
+1. Open **Settings, Ask Quota** and enter your **endpoint** (`https://your-resource.openai.azure.com`), the
+   **deployment name** of a chat model (for example `gpt-4o`) and your **API key**. You can paste a full request URL
+   instead and Quota picks out the deployment and API version. Select **Test connection**.
+2. Open **Ask** in the top bar and type a question, or pick a suggestion. Answers stream in as they are written.
+
+What is sent: a short summary of your last 30 days (days, categories, apps, away-from-computer time, weekly totals)
+and the chat so far. **Window titles are never sent**, and website names only if you switch that on. Open
+"What the assistant can see" on the Ask page to read the exact text. Chats are not saved anywhere.
+
+The key: stored in your data file (`~/.quota/data.json`, readable only by you) and never shown in the browser again.
+To keep it out of the file, set `QUOTA_AI_KEY` (or `AZURE_OPENAI_API_KEY`) before starting Quota instead.
+Quota talks only to the endpoint you enter, over https, and does not follow redirects.
+
+If the test says Python doesn't trust the certificate: on a Mac with python.org Python, run
+"Install Certificates.command" once; on a company network, ask IT for the root certificate.
+
 ## Privacy
 
-Everything stays in `~/.quota/data.json` on your computer. Nothing is sent anywhere, and the dashboard only
-answers requests from your own machine. By default Quota stores app names and seconds. Browser tab titles are
+Everything stays in `~/.quota/data.json` on your computer. The dashboard only answers requests from your own machine. Nothing is sent anywhere unless you set up Ask Quota, which
+sends a summary to the Azure OpenAI endpoint you enter. By default Quota stores app names and seconds. Browser tab titles are
 read only to pick a category and are **not saved**. Turn on "Also save window titles" in Settings only if you
 want titles kept. Turn off "Record which apps I use" to keep only category totals.
 

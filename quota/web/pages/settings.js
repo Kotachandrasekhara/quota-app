@@ -54,4 +54,16 @@ $("testnotify").onclick=async()=>{const m=$("test_msg");
  try{const r=await fetch("/api/test-notify",{method:"POST",headers:{"Content-Type":"application/json"},body:"{}"});
   if(!r.ok)throw 0;m.className="msg ok";m.textContent="Sent. You should see a pop-up now.";setTimeout(()=>{m.textContent="";},6000);}
  catch(e){m.className="msg bad";m.textContent="Couldn't send the test.";}};
-loadCfg();loadOff();loadAway();
+
+function aiMsg(t,ok){const m=$("ai_msg");m.className="msg "+(ok?"ok":"bad");m.textContent=t;if(ok)setTimeout(()=>{m.textContent="";},5000);}
+async function aiPost(path,body){const r=await fetch(path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body||{})});
+ const j=await r.json();if(!r.ok)throw new Error(j.error||"Couldn't do that.");return j;}
+function drawAI(a){$("ai_endpoint").value=a.endpoint;$("ai_deployment").value=a.deployment;$("ai_version").value=a.api_version;$("ai_sites").checked=a.share_websites;$("ai_key").value="";
+ $("ai_key").placeholder=a.key_set?(a.key_source==="environment"?"Using the key from your environment":"Saved"+(a.key_hint?" (ends "+a.key_hint+")":"")+". Leave empty to keep it."):"Paste your key";
+ $("ai_clear").hidden=a.key_source!=="settings";}
+async function loadAI(){try{drawAI(await (await fetch("/api/ai")).json());}catch(e){aiMsg("Couldn't load the assistant settings.",false);}}
+const aiBody=()=>({endpoint:$("ai_endpoint").value,deployment:$("ai_deployment").value,api_version:$("ai_version").value,key:$("ai_key").value,share_websites:$("ai_sites").checked});
+$("ai_save").onclick=async()=>{try{drawAI(await aiPost("/api/ai",aiBody()));aiMsg("Saved. Select Test connection to check it.",true);}catch(e){aiMsg(e.message,false);}};
+$("ai_test").onclick=async()=>{aiMsg("Testing...",true);try{drawAI(await aiPost("/api/ai",aiBody()));const j=await aiPost("/api/ai/test");aiMsg("Connected. The model answered: "+j.reply,true);}catch(e){aiMsg(e.message,false);}};
+$("ai_clear").onclick=async()=>{try{drawAI(await aiPost("/api/ai",Object.assign(aiBody(),{key:"",clear_key:true})));aiMsg("The saved key was removed.",true);}catch(e){aiMsg(e.message,false);}};
+loadCfg();loadOff();loadAway();loadAI();

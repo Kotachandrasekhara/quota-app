@@ -34,7 +34,7 @@ def reset():
 
 
 def load():
-    os.makedirs(APP_DIR, exist_ok=True)
+    os.makedirs(APP_DIR, mode=0o700, exist_ok=True)
     if not DEMO and not os.path.exists(DATA_FILE) and os.path.exists(OLD_DATA_FILE):
         try:
             shutil.copyfile(OLD_DATA_FILE, DATA_FILE)
@@ -60,7 +60,7 @@ def load():
                 data[key] = loaded.get(key, {})
             if needs_v2:
                 try:
-                    shutil.copyfile(DATA_FILE, DATA_FILE + ".before-v2")  # keep a copy of your history first
+                    shutil.copy(DATA_FILE, DATA_FILE + ".before-v2")  # keep a copy of your history first
                     migrate_rules_v2(data)
                     print("Upgraded categories: Reading and Documenting are now one category.")
                 except Exception as e:
@@ -125,7 +125,8 @@ def migrate_rules_v2(data):
 
 def save(data):
     tmp = DATA_FILE + ".tmp"
-    with open(tmp, "w", encoding="utf-8") as f:
+    fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)  # only you can read it: it can hold your API key
+    with os.fdopen(fd, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
     os.replace(tmp, DATA_FILE)
 

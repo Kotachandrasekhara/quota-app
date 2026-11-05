@@ -20,6 +20,7 @@ def build_pages():
         "/": render_page("Quota: Today", "today", _read("pages/today.html"), _read("pages/today.js")),
         "/reports": render_page("Quota: Dashboards", "reports", _read("pages/reports.html"),
                                 _read("pages/reports.js")),
+        "/chat": render_page("Quota: Ask", "chat", _read("pages/chat.html"), _read("pages/chat.js")),
         "/settings": render_page("Quota: Settings", "settings", _read("pages/settings.html"),
                                  _read("pages/settings.js")),
     }

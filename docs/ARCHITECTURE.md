@@ -23,6 +23,7 @@ Everything is stored in one JSON file, `~/.quota/data.json`. Nothing leaves the 
 | `alerts.py` | The reminder rules. |
 | `tracker.py` | The sampling loop (runs in a background thread). |
 | `reports.py` | History, rankings and CSV export for the Dashboards page. |
+| `assistant.py` | Ask Quota: Azure OpenAI settings, the 30-day summary sent to the model, and the streaming call. |
 | `settings.py` | Checks and applies the Settings form. |
 | `demo.py` | Sample history for `python -m quota --demo`. |
 | `autostart.py` | `python -m quota install`: the macOS login job (launchd) and Quota.app for the Dock. |
@@ -62,6 +63,8 @@ Private mode is never stored: it lives in `state` and is off every time Quota st
 - Every POST must be `application/json`, which a web page can't send to another origin without a preflight.
 - App names, notes and websites are shown with `textContent` and escaped in CSV (a leading `=`, `+`, `-` or `@` is
   prefixed with `'`).
+- The Azure key is stored in the data file (mode 600), never returned by any `/api` call, and only sent to the endpoint
+  you entered (https, no redirects). Chat answers are shown as text, never as HTML.
 - Only the website's domain is kept. The path, query and title are dropped before anything is stored.
 
 ## Adding things

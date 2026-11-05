@@ -1,0 +1,15 @@
+
+<div class="head"><div><h1 class="page">Ask Quota</h1><div class="sub">Ask about your time. Answers come from your own Azure OpenAI deployment.</div></div>
+<div class="hactions"><button type="button" id="newchat" hidden>New chat</button></div></div>
+<div class="err" id="err" role="alert"></div>
+<section class="panel" id="empty" hidden><h2>Connect your Azure OpenAI deployment</h2>
+<div class="note">Add your endpoint, deployment name and API key in Settings. Quota then answers questions like "where did my time go this month?" using a summary of your tracked time.</div>
+<p><a class="btn" href="/settings#ai">Open settings</a></p></section>
+<section class="chatbox" id="chatbox" hidden>
+<div class="msgs" id="msgs" aria-live="polite"></div>
+<div class="chips" id="chips"></div>
+<form class="composer" id="composer"><textarea id="q" rows="2" maxlength="2000" aria-label="Your question" placeholder="Ask about your week. Enter sends, Shift+Enter adds a line."></textarea>
+<button class="primary" id="send" type="submit">Send</button><button id="stop" type="button" hidden>Stop</button></form>
+<details class="seen" id="seen"><summary>What the assistant can see</summary>
+<div class="note">This summary is sent with each question. It never includes window titles. Change what is shared in Settings.</div><pre id="ctx"></pre></details>
+</section>

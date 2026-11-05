@@ -123,3 +123,10 @@ def apply_config(cfg):
     # if the limit was raised, thresholds that are no longer reached can fire again
     DATA["alerts"][status["week_start"]] = [a for a in fired if isinstance(a, str) or a <= pct]
     save(DATA)
+
+
+def public_config(cfg):
+    """The settings as the Settings page may see them: never the API key."""
+    out = {k: v for k, v in cfg.items() if k != "ai_key"}
+    out.update(text_fields(cfg))
+    return out

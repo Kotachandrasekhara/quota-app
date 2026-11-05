@@ -17,11 +17,12 @@ from .config import APP_NAME, DATA_FILE, DEFAULT_CONFIG, DEMO, OFFLINE_KINDS, OF
 from .demo import seed_demo
 from .offline import add_offline, offline_view, remove_offline
 from .reports import export_csv, history, parse_range
-from .settings import apply_config, text_fields, validate_config
+from .settings import apply_config, text_fields, validate_config, public_config
 from .status import compute_status, fmt
 from .store import init, DATA, save
 from .system import idle_seconds, notify
 from .tracker import tracker
+from . import assistant
 from .icon import png
 from .web import PAGES
 
@@ -51,20 +52,64 @@ class Handler(BaseHTTPRequestHandler):
     def _json(self, code, obj):
         self._send(code, json.dumps(obj).encode(), "application/json")
 
+    def _chat(self, payload):
+        """Stream the assistant's answer as one JSON object per line: {"t": text}, then {"done": true} or {"error": ...}."""
+        try:
+            messages = assistant.clean_messages(payload.get("messages"))
+            if not assistant.configured():
+                raise ValueError("Add your endpoint, deployment name and key in Settings first.")
+        except ValueError as e:
+            return self._json(400, {"error": str(e)})
+        with lock:
+            context = assistant.build_context()
+        self.send_response(200)
+        self.send_header("Content-Type", "application/x-ndjson")
+        self.send_header("Cache-Control", "no-cache")
+        self.end_headers()  # no Content-Length: the connection closes when the answer is complete
+
+        def line(obj):
+            self.wfile.write(json.dumps(obj).encode() + b"\n")
+            self.wfile.flush()
+        try:
+            for text in assistant.stream_chat(messages, context):
+                line({"t": text})
+            line({"done": True})
+        except assistant.AIError as e:
+            line({"error": str(e)})
+        except (BrokenPipeError, ConnectionResetError):
+            pass  # the page was closed or Stop was pressed
+
     def do_POST(self):
-        if (self.path not in ("/api/config", "/api/days-off", "/api/pause", "/api/offline", "/api/test-notify")
+        if (self.path not in ("/api/config", "/api/days-off", "/api/pause", "/api/offline", "/api/test-notify",
+                              "/api/ai", "/api/ai/test", "/api/chat")
                 or not self._host_ok()
                 or "application/json" not in self.headers.get("Content-Type", "")):
             return self._json(403, {"error": "forbidden"})
         try:
             length = int(self.headers.get("Content-Length", 0))
-            if length > 60000:
+            if length > (120000 if self.path == "/api/chat" else 60000):
                 raise ValueError("Request too large")
             payload = json.loads(self.rfile.read(length) or b"{}")
             if not isinstance(payload, dict):
                 raise ValueError("Expected a JSON object")
         except (ValueError, TypeError) as e:
             return self._json(400, {"error": str(e)})
+        if self.path == "/api/ai":  # Azure OpenAI endpoint, deployment and key for the Ask page
+            try:
+                with lock:
+                    view = assistant.save_settings(payload)
+                    save(DATA)
+            except ValueError as e:
+                return self._json(400, {"error": str(e)})
+            return self._json(200, view)
+        if self.path == "/api/ai/test":
+            try:
+                reply = assistant.test_connection()
+            except assistant.AIError as e:
+                return self._json(502, {"error": str(e)})
+            return self._json(200, {"ok": True, "reply": reply})
+        if self.path == "/api/chat":
+            return self._chat(payload)
         if self.path == "/api/offline":  # work away from the computer: in-person meetings, org events
             try:
                 day = date.fromisoformat(str(payload.get("date")))
@@ -155,7 +200,7 @@ class Handler(BaseHTTPRequestHandler):
             return self._json(400, {"error": str(e)})
         with lock:
             apply_config(cfg)
-            result = {"config": dict(DATA["config"]), "status": compute_status()}
+            result = {"config": public_config(DATA["config"]), "status": compute_status()}
         self._json(200, result)
 
     def do_GET(self):
@@ -166,7 +211,13 @@ class Handler(BaseHTTPRequestHandler):
         qs = parse_qs(parsed.query)
         if path == "/api/config":
             with lock:
-                return self._json(200, dict(DATA["config"], **text_fields(DATA["config"])))
+                return self._json(200, public_config(DATA["config"]))
+        if path == "/api/ai":
+            with lock:
+                return self._json(200, assistant.settings_view())
+        if path == "/api/chat/context":  # exactly what the assistant is told about you
+            with lock:
+                return self._json(200, {"text": assistant.build_context()})
         if path == "/api/defaults":
             return self._json(200, text_fields(DEFAULT_CONFIG))
         if path == "/api/status":
