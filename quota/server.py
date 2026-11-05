@@ -1,5 +1,6 @@
 """The local web server and its JSON API, and the entry point."""
 import json
+import uuid
 import platform
 import re
 import sys
@@ -53,7 +54,8 @@ class Handler(BaseHTTPRequestHandler):
         self._send(code, json.dumps(obj).encode(), "application/json")
 
     def _chat(self, payload):
-        """Stream the assistant's answer as one JSON object per line: {"t": text}, then {"done": true} or {"error": ...}."""
+        """Stream the answer as one JSON event per line, named like AG-UI events: RUN_STARTED, TEXT_MESSAGE_START,
+        TEXT_MESSAGE_CONTENT (delta), TEXT_MESSAGE_END, then RUN_FINISHED or RUN_ERROR."""
         try:
             messages = assistant.clean_messages(payload.get("messages"))
             if not assistant.configured():
@@ -70,12 +72,16 @@ class Handler(BaseHTTPRequestHandler):
         def line(obj):
             self.wfile.write(json.dumps(obj).encode() + b"\n")
             self.wfile.flush()
+        mid = "msg_" + uuid.uuid4().hex[:12]
         try:
+            line({"type": "RUN_STARTED", "threadId": "ask", "runId": "run_" + uuid.uuid4().hex[:12]})
+            line({"type": "TEXT_MESSAGE_START", "messageId": mid, "role": "assistant"})
             for text in assistant.stream_chat(messages, context):
-                line({"t": text})
-            line({"done": True})
+                line({"type": "TEXT_MESSAGE_CONTENT", "messageId": mid, "delta": text})
+            line({"type": "TEXT_MESSAGE_END", "messageId": mid})
+            line({"type": "RUN_FINISHED", "threadId": "ask"})
         except assistant.AIError as e:
-            line({"error": str(e)})
+            line({"type": "RUN_ERROR", "message": str(e)})
         except (BrokenPipeError, ConnectionResetError):
             pass  # the page was closed or Stop was pressed
 

@@ -175,8 +175,11 @@ class AssistantTests(unittest.TestCase):
         code, raw = self.call("POST", "/api/chat", {"messages": [{"role": "user", "content": "How am I doing?"}]})
         self.assertEqual(code, 200)
         lines = [json.loads(x) for x in raw.splitlines() if x.strip()]
-        self.assertEqual("".join(x.get("t", "") for x in lines), "Hello world")
-        self.assertEqual(lines[-1], {"done": True})
+        kinds = [x["type"] for x in lines]
+        self.assertEqual(kinds[:2], ["RUN_STARTED", "TEXT_MESSAGE_START"])
+        self.assertEqual(kinds[-2:], ["TEXT_MESSAGE_END", "RUN_FINISHED"])
+        self.assertEqual("".join(x.get("delta", "") for x in lines if x["type"] == "TEXT_MESSAGE_CONTENT"), "Hello world")
+        self.assertEqual(len({x.get("messageId") for x in lines if "messageId" in x}), 1)
         sent = FakeAzure.seen["body"]
         self.assertTrue(sent["stream"])
         self.assertEqual([m["role"] for m in sent["messages"]], ["system", "user"])
@@ -187,7 +190,9 @@ class AssistantTests(unittest.TestCase):
         FakeAzure.mode = "401"
         code, raw = self.call("POST", "/api/chat", {"messages": [{"role": "user", "content": "hi"}]})
         self.assertEqual(code, 200)
-        self.assertIn("rejected the key", json.loads(raw.splitlines()[-1])["error"])
+        last = json.loads(raw.splitlines()[-1])
+        self.assertEqual(last["type"], "RUN_ERROR")
+        self.assertIn("rejected the key", last["message"])
 
     def test_chat_needs_settings_and_a_question(self):
         self.assertEqual(self.jcall("POST", "/api/chat", {"messages": [{"role": "user", "content": "hi"}]})[0], 400)
@@ -228,3 +233,10 @@ class AssistantTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class PromptTests(unittest.TestCase):
+    def test_prompt_teaches_the_view_format_and_only_catalog_parts(self):
+        from quota import assistant
+        for word in ("a2ui", "surfaceUpdate", "beginRendering", "BarChart", "Progress", "Stat", "Table"):
+            self.assertIn(word, assistant.SYSTEM_PROMPT)

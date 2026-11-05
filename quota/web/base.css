@@ -163,3 +163,20 @@ select{font:inherit;font-size:14px;color:var(--ink);background:var(--surface);bo
 .bar{gap:8px;padding:0 12px}nav{gap:10px}nav a{font-size:14px}.wrap{padding-left:16px;padding-right:16px}.tilegrid{min-width:0}
 .brand span,.switch span{display:none}.switch{padding:5px}}
 @media print{body{background:#fff}.top,.noprint{display:none!important}.panel{break-inside:avoid;border-color:#ccc}}
+/* Generative views in the Ask chat (see a2ui.js) */
+.a2-surface{margin:10px 0;display:block}.a2-surface:first-child{margin-top:0}.a2-surface:last-child{margin-bottom:0}
+.a2-column{display:flex;flex-direction:column;gap:12px}.a2-row{display:flex;flex-wrap:wrap;gap:12px;align-items:stretch}.a2-row>*{flex:1 1 140px;min-width:0}
+.a2-card{border:1px solid var(--ring);border-radius:12px;padding:14px 16px;background:var(--bg);display:flex;flex-direction:column;gap:10px}
+.a2-text{margin:0}h3.a2-text{font-size:17px;letter-spacing:-.02em}h4.a2-text{font-size:15px}h5.a2-text{font-size:14px;color:var(--ink2)}.a2-cap{font-size:13px;color:var(--ink2)}
+.a2-hr{border:0;border-top:1px solid var(--grid);margin:2px 0;width:100%}
+.a2-stat{display:flex;flex-direction:column;gap:2px}.a2-sl{font-size:13px;color:var(--ink2)}.a2-sv{font-size:26px;font-weight:700;letter-spacing:-.03em;line-height:1.15;font-variant-numeric:tabular-nums}.a2-sd{font-size:13px;color:var(--ink2)}
+.a2-row2{display:flex;justify-content:space-between;gap:10px;font-size:14px;margin-bottom:5px}.a2-row2 b{font-variant-numeric:tabular-nums}
+.a2-track{height:10px;border-radius:5px;background:var(--grid);overflow:hidden}.a2-track span{display:block;height:100%;background:var(--brand);border-radius:5px}.a2-track.over span{background:var(--crit)}
+.a2-chart{display:flex;flex-direction:column;gap:6px}.a2-ct{font-size:14px;font-weight:600;margin-bottom:2px}
+.a2-bar{display:grid;grid-template-columns:minmax(70px,26%) 1fr auto;gap:10px;align-items:center;font-size:13px;border-radius:6px}
+.a2-bl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink2)}.a2-bv{font-variant-numeric:tabular-nums;min-width:48px;text-align:right}
+.a2-bt{height:12px;border-radius:0 6px 6px 0;position:relative}.a2-bt span{display:block;height:100%;background:var(--brand);border-radius:0 6px 6px 0;min-width:2px}
+.a2-bar:hover .a2-bt span,.a2-bar:focus-visible .a2-bt span{filter:brightness(1.15)}
+.a2-tablewrap{overflow-x:auto}
+.a2-btn{align-self:flex-start;font:inherit;font-size:14px;padding:7px 14px;border:1px solid var(--ring);border-radius:999px;background:var(--surface);color:var(--ink);cursor:pointer}.a2-btn:hover{border-color:var(--brand);color:var(--brand)}
+.a2-pending{font-size:13px;color:var(--mut);padding:6px 0}

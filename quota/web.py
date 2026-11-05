@@ -20,7 +20,8 @@ def build_pages():
         "/": render_page("K(Qu)ota: Today", "today", _read("pages/today.html"), _read("pages/today.js")),
         "/reports": render_page("K(Qu)ota: Dashboards", "reports", _read("pages/reports.html"),
                                 _read("pages/reports.js")),
-        "/chat": render_page("K(Qu)ota: Ask", "chat", _read("pages/chat.html"), _read("pages/chat.js")),
+        "/chat": render_page("K(Qu)ota: Ask", "chat", _read("pages/chat.html"),
+                            _read("a2ui.js") + "\n" + _read("pages/chat.js")),
         "/settings": render_page("K(Qu)ota: Settings", "settings", _read("pages/settings.html"),
                                  _read("pages/settings.js")),
     }

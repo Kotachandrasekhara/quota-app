@@ -19,8 +19,16 @@ function md(host,text){host.replaceChildren();const lines=text.replace(/\r/g,"")
    while(i<lines.length&&/^\s*([-*]|\d+\.)\s+/.test(lines[i])){const li=el("li");inline(li,lines[i].replace(/^\s*([-*]|\d+\.)\s+/,""));ul.append(li);i++;}host.append(ul);continue;}
   const para=[];while(i<lines.length&&lines[i].trim()&&!/^\s*(\||([-*]|\d+\.)\s)/.test(lines[i])){para.push(lines[i].replace(/^#+\s*/,""));i++;}
   const p=el("p");inline(p,para.join(" "));host.append(p);}}
+const uiCache=new Map();
+/* An answer is prose plus optional A2UI views (stat tiles, bars, tables, buttons) drawn from a fixed, safe catalog. */
+function answer(host,text){const parts=A2.split(text);if(!parts.some(p=>p.ui!=null||p.pending)){md(host,text);return;}
+ host.replaceChildren();
+ parts.forEach(p=>{if(p.pending){host.append(el("div",{class:"a2-pending",text:"Building a view…"}));return;}
+  if(p.ui!=null){let n=uiCache.get(p.ui);if(!n){const S=A2.parse(p.ui),k=Object.keys(S)[0];n=k?A2.render(k,S[k],a=>{if(a.ask)ask(a.ask);}):null;if(n)uiCache.set(p.ui,n);}
+   if(n)host.append(n);return;}
+  if(p.text.trim()){const d=el("div");md(d,p.text);host.append(d);}});}
 function bubble(role,text,cls){const b=el("div",{class:"bubble"+(cls?" "+cls:"")});
- if(role==="user")b.textContent=text;else md(b,text);
+ if(role==="user")b.textContent=text;else answer(b,text);
  $("msgs").append(el("div",{class:"msg-row "+(role==="user"?"me":"bot")},[b]));b.scrollIntoView({block:"end"});return b;}
 function setBusy(v){busy=v;$("send").hidden=v;$("stop").hidden=!v;$("q").disabled=v;if(!v)$("q").focus();}
 async function ask(text){text=text.trim();if(!text||busy)return;say("");
@@ -31,11 +39,12 @@ async function ask(text){text=text.trim();if(!text||busy)return;say("");
   const rd=r.body.getReader(),dec=new TextDecoder();let buf="";
   for(;;){const{value,done}=await rd.read();if(done)break;buf+=dec.decode(value,{stream:true});
    let n;while((n=buf.indexOf("\n"))>=0){const ln=buf.slice(0,n).trim();buf=buf.slice(n+1);if(!ln)continue;
-    const o=JSON.parse(ln);if(o.error)throw new Error(o.error);if(o.t){got+=o.t;md(out,got);out.classList.add("wait");out.scrollIntoView({block:"end"});}}}
-  out.classList.remove("wait");if(got)chat.push({role:"assistant",content:got});else{out.classList.add("err");out.textContent="No answer came back. Try again.";}
+    const o=JSON.parse(ln);if(o.type==="RUN_ERROR")throw new Error(o.message||"Something went wrong.");
+    if(o.type==="TEXT_MESSAGE_CONTENT"&&o.delta){got+=o.delta;answer(out,got);out.classList.add("wait");out.scrollIntoView({block:"end"});}}}
+  out.classList.remove("wait");if(got)chat.push({role:"assistant",content:A2.strip(got)});else{out.classList.add("err");out.textContent="No answer came back. Try again.";}
  }catch(e){out.classList.remove("wait");
-  if(e.name==="AbortError"){if(got)chat.push({role:"assistant",content:got});else out.remove();}
-  else{out.classList.add("err");const msg=el("div",{text:e.message||"Something went wrong."});out.append(got?el("hr"):"",msg);if(got)chat.push({role:"assistant",content:got});else chat.pop();}}
+  if(e.name==="AbortError"){if(got)chat.push({role:"assistant",content:A2.strip(got)});else out.remove();}
+  else{out.classList.add("err");const msg=el("div",{text:e.message||"Something went wrong."});out.append(got?el("hr"):"",msg);if(got)chat.push({role:"assistant",content:A2.strip(got)});else chat.pop();}}
  ctrl=null;setBusy(false);}
 $("composer").onsubmit=e=>{e.preventDefault();ask($("q").value);};
 $("q").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey&&!e.isComposing){e.preventDefault();ask($("q").value);}});

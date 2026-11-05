@@ -92,6 +92,13 @@ are sorted by app name.
    instead and K(Qu)ota picks out the deployment and API version. Select **Test connection**.
 2. Open **Ask** in the top bar and type a question, or pick a suggestion. Answers stream in as they are written.
 
+Answers can include small visual views (stat tiles, progress bars, bar charts, tables and follow-up buttons) when
+numbers are easier to see than to read. These follow the idea of Google's A2UI (the assistant describes a view in
+JSON, the app draws it from its own fixed set of parts) and the stream uses AG-UI-style event names
+(`RUN_STARTED`, `TEXT_MESSAGE_CONTENT`, ...). It is a small subset written for this app, not the full specs or SDKs.
+Views are drawn as plain text and shapes only: no HTML, links or scripts from the model are ever run.
+The renderer is `quota/web/a2ui.js`.
+
 What is sent: a short summary of your last 30 days (days, categories, apps, away-from-computer time, weekly totals)
 and the chat so far. **Window titles are never sent**, and website names only if you switch that on. Open
 "What the assistant can see" on the Ask page to read the exact text. Chats are not saved anywhere.
