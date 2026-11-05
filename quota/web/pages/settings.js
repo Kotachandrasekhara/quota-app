@@ -9,12 +9,12 @@ function say(t,ok){const m=$("msg");m.className="msg "+(ok?"ok":"bad");m.textCon
 async function loadCfg(){try{const c=await (await fetch("/api/config")).json();
  NUM.forEach(k=>$("c_"+k).value=c[k]??"");$("c_alert_percents").value=(c.alert_percents||[]).join(", ");drawDays(c.workdays||[0,1,2,3,4]);
  CHK.forEach(k=>$("c_"+k).checked=!!c[k]);TXT.forEach(k=>$(k==="browsers_text"?k:k).value=c[k]||"");}
- catch(e){say("Couldn't reach Quota. Check that it is still running in your terminal.",false);}}
+ catch(e){say("Couldn't reach K(Qu)ota. Check that it is still running in your terminal.",false);}}
 $("save").onclick=async()=>{const body={};NUM.forEach(k=>body[k]=$("c_"+k).value);body.alert_percents=$("c_alert_percents").value;body.workdays=pickedDays();
  CHK.forEach(k=>body[k]=$("c_"+k).checked);TXT.forEach(k=>body[k]=$(k).value);
  try{const r=await fetch("/api/config",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}),j=await r.json();
   if(!r.ok){say(j.error||"Couldn't save the changes.",false);return;}say("Changes saved.",true);loadCfg();loadOff();}
- catch(e){say("Couldn't reach Quota. Check that it is still running in your terminal.",false);}};
+ catch(e){say("Couldn't reach K(Qu)ota. Check that it is still running in your terminal.",false);}};
 $("defaults").onclick=async()=>{try{const d=await (await fetch("/api/defaults")).json();TXT.forEach(k=>$(k).value=d[k]);say("Defaults loaded. Select Save changes to keep them.",true);}catch(e){say("Couldn't load the defaults.",false);}};
 const dayDate=s=>{const[y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d);};
 const isoD=d=>d.getFullYear()+"-"+p2(d.getMonth()+1)+"-"+p2(d.getDate());

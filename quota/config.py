@@ -4,7 +4,7 @@ import sys
 import threading
 
 
-APP_NAME = "Quota"
+APP_NAME = "K(Qu)ota"
 
 
 DEMO = "--demo" in sys.argv or os.environ.get("QUOTA_DEMO") == "1"
@@ -101,7 +101,7 @@ lock = threading.Lock()
 
 
 state = {"idle_seconds": 0.0, "active": False, "idle_supported": True, "now_app": None, "now_cat": None,
-         "paused": False, "paused_at": None, "addr": None, "last_alert": None}  # Private mode is never saved: it is off every time Quota starts
+         "paused": False, "paused_at": None, "addr": None, "last_alert": None}  # Private mode is never saved: it is off every time K(Qu)ota starts
 
 
 OFFLINE_KINDS = {"meeting": "In-person meeting", "event": "Org event", "training": "Training",

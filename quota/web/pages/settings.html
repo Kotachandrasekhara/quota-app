@@ -18,8 +18,8 @@
 <div id="off_list"></div></section>
 <section class="panel"><h2>Time away from the computer</h2><div class="note">In-person meetings and org events you logged on the Today page. They count as work and use tokens. Remove a mistake here.</div>
 <div id="away_list"></div><span class="msg" id="away_msg" role="status"></span></section>
-<section class="panel" id="ai"><h2>Ask Quota (Azure OpenAI)</h2>
-<div class="note">Connect your own Azure OpenAI deployment to chat about your time on the Ask page. Quota sends the model a short summary of your last 30 days (days, categories, apps) and your question. Window titles are never sent. The key stays on this computer in your data file, only you can read it, and it is never shown again here.</div>
+<section class="panel" id="ai"><h2>Ask K(Qu)ota (Azure OpenAI)</h2>
+<div class="note">Connect your own Azure OpenAI deployment to chat about your time on the Ask page. K(Qu)ota sends the model a short summary of your last 30 days (days, categories, apps) and your question. Window titles are never sent. The key stays on this computer in your data file, only you can read it, and it is never shown again here.</div>
 <div class="fgrid">
 <label class="field">Endpoint<input type="url" id="ai_endpoint" placeholder="https://your-resource.openai.azure.com" autocomplete="off" spellcheck="false"></label>
 <label class="field">Deployment name<input type="text" id="ai_deployment" placeholder="gpt-4o" autocomplete="off" spellcheck="false"></label>
@@ -41,11 +41,11 @@
 </div>
 <p><button id="testnotify" type="button">Send a test reminder</button> <span class="msg" id="test_msg" role="status"></span></p>
 <div class="note">Reminders show as a pop-up from your computer and as a banner on the Today page. If the pop-up doesn't appear, check your system notification settings for your terminal or Python.</div></section>
-<section class="panel"><h2>What Quota records</h2><div class="note">Everything stays in a file on this computer. Nothing is sent anywhere. For anything personal, use Private mode (the switch in the top bar). It stops all recording and is always off when Quota starts.</div>
+<section class="panel"><h2>What K(Qu)ota records</h2><div class="note">Everything stays in a file on this computer. Nothing is sent anywhere. For anything personal, use Private mode (the switch in the top bar). It stops all recording and is always off when K(Qu)ota starts.</div>
 <label class="check"><input type="checkbox" id="c_track_categories"><span>Sort my time into categories<small>Stores seconds per category per day.</small></span></label>
 <label class="check"><input type="checkbox" id="c_classify_by_title"><span>Use browser tab titles to pick the category<small>Tells a Google Meet tab from a Google Docs tab. Titles are read to decide the category and are not saved.</small></span></label>
 <label class="check"><input type="checkbox" id="c_track_apps"><span>Record which apps I use<small>Stores the app name only.</small></span></label>
-<label class="check"><input type="checkbox" id="c_track_domains"><span>Record which websites I visit<small>Stores the website name only (like docs.google.com), never the page or address. It also helps pick the category. Nothing to install: Quota reads the address bar on Windows, and asks Chrome, Edge, Brave, Arc or Safari on a Mac (macOS asks permission once). Not available on Linux.</small></span></label>
+<label class="check"><input type="checkbox" id="c_track_domains"><span>Record which websites I visit<small>Stores the website name only (like docs.google.com), never the page or address. It also helps pick the category. Nothing to install: K(Qu)ota reads the address bar on Windows, and asks Chrome, Edge, Brave, Arc or Safari on a Mac (macOS asks permission once). Not available on Linux.</small></span></label>
 <label class="check"><input type="checkbox" id="c_track_titles"><span>Also save window titles<small>Shows exactly which page or document. Titles can be private, so this is off by default.</small></span></label>
 </section>
 <section class="panel"><h2>Categories</h2>

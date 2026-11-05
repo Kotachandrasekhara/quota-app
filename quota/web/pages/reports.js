@@ -132,7 +132,7 @@ async function load(k,from,to){
  $("csvd").href=`/api/export.csv?kind=days&from=${from}&to=${to}`;$("csva").href=`/api/export.csv?kind=apps&from=${from}&to=${to}`;$("csvw").href=`/api/export.csv?kind=domains&from=${from}&to=${to}`;
  try{const r=await fetch(`/api/history?from=${from}&to=${to}`),j=await r.json();
   if(!r.ok)$("err").textContent=j.error||"Couldn't load history.";else{D=j;render();}}
- catch(e){$("err").textContent="Couldn't reach Quota. Check that it is still running in your terminal.";}
+ catch(e){$("err").textContent="Couldn't reach K(Qu)ota. Check that it is still running in your terminal.";}
  $("main").style.opacity=1;
 }
 $("apply").onclick=()=>{if($("from").value&&$("to").value)load("custom",$("from").value,$("to").value);};

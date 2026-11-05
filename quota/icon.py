@@ -1,4 +1,4 @@
-"""The Quota app icon, drawn in pure Python (no image library) and returned as PNG bytes."""
+"""The K(Qu)ota app icon, drawn in pure Python (no image library) and returned as PNG bytes."""
 import math
 import struct
 import zlib

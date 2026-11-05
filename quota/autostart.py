@@ -1,6 +1,6 @@
-"""Start Quota when you log in (macOS), and a Quota.app you can keep in the Dock.
+"""Start K(Qu)ota when you log in (macOS), and a KQuota.app you can keep in the Dock.
 
-    python -m quota install      start at login, in the background, and add Quota.app to ~/Applications
+    python -m quota install      start at login, in the background, and add KQuota.app to ~/Applications
     python -m quota uninstall    remove both
 """
 import os
@@ -26,11 +26,22 @@ def plist_path():
 
 
 def app_path():
+    return os.path.join(_home(), "Applications", "KQuota.app")
+
+
+def old_app_path():
+    """The bundle's name before the app was renamed to K(Qu)ota."""
     return os.path.join(_home(), "Applications", "Quota.app")
 
 
+def _remove_old_app():
+    import shutil
+    if os.path.isdir(old_app_path()):
+        shutil.rmtree(old_app_path(), ignore_errors=True)
+
+
 def log_path():
-    return os.path.join(_home(), "Library", "Logs", "Quota.log")
+    return os.path.join(_home(), "Library", "Logs", "KQuota.log")
 
 
 def launch_agent():
@@ -50,7 +61,7 @@ def launch_agent():
 
 
 def launcher_script():
-    """What Quota.app runs: make sure Quota is up, then open the dashboard in its own window."""
+    """What KQuota.app runs: make sure K(Qu)ota is up, then open the dashboard in its own window."""
     q = shlex.quote
     return f"""#!/bin/bash
 URL="http://127.0.0.1:{config.PORT}"
@@ -67,22 +78,22 @@ open "$URL"
 
 
 def build_app(dest, make_icns=True):
-    """Create the Quota.app bundle at dest."""
+    """Create the KQuota.app bundle at dest."""
     macos, res = os.path.join(dest, "Contents", "MacOS"), os.path.join(dest, "Contents", "Resources")
     os.makedirs(macos, exist_ok=True)
     os.makedirs(res, exist_ok=True)
     with open(os.path.join(dest, "Contents", "Info.plist"), "wb") as f:
-        plistlib.dump({"CFBundleName": "Quota", "CFBundleDisplayName": "Quota", "CFBundleExecutable": "Quota",
-                       "CFBundleIdentifier": "com.quota.launcher", "CFBundleIconFile": "Quota",
+        plistlib.dump({"CFBundleName": "K(Qu)ota", "CFBundleDisplayName": "K(Qu)ota", "CFBundleExecutable": "KQuota",
+                       "CFBundleIdentifier": "com.quota.launcher", "CFBundleIconFile": "KQuota",
                        "CFBundlePackageType": "APPL", "CFBundleShortVersionString": "1.0",
                        "LSMinimumSystemVersion": "10.13", "NSHighResolutionCapable": True}, f)
-    script = os.path.join(macos, "Quota")
+    script = os.path.join(macos, "KQuota")
     with open(script, "w") as f:
         f.write(launcher_script())
     os.chmod(script, 0o755)
     if make_icns:
         try:
-            _make_icns(os.path.join(res, "Quota.icns"))
+            _make_icns(os.path.join(res, "KQuota.icns"))
         except Exception as e:  # the app works without an icon
             print("Could not make the icon:", e)
 
@@ -92,7 +103,7 @@ def _make_icns(target):
              "icon_128x128.png": 128, "icon_128x128@2x.png": 256, "icon_256x256.png": 256,
              "icon_256x256@2x.png": 512, "icon_512x512.png": 512, "icon_512x512@2x.png": 1024}
     with tempfile.TemporaryDirectory() as tmp:
-        iconset = os.path.join(tmp, "Quota.iconset")
+        iconset = os.path.join(tmp, "KQuota.iconset")
         os.makedirs(iconset)
         for name, size in names.items():
             with open(os.path.join(iconset, name), "wb") as f:
@@ -115,8 +126,9 @@ def install():
     r = _launchctl("bootstrap", target, path)
     if r.returncode != 0:
         r = _launchctl("load", "-w", path)
+    _remove_old_app()
     build_app(app_path())
-    print("Quota will now start by itself when you log in.")
+    print("K(Qu)ota will now start by itself when you log in.")
     print("  Background job:", path)
     print("  Log file:      ", log_path())
     print("  App:           ", app_path(), "(drag it to the Dock)")
@@ -136,7 +148,8 @@ def uninstall():
     if os.path.isdir(app):
         import shutil
         shutil.rmtree(app)
-    print("Removed the login job and Quota.app. Your data in ~/.quota is untouched.")
+    _remove_old_app()
+    print("Removed the login job and KQuota.app. Your data in ~/.quota is untouched.")
 
 
 def run(command):

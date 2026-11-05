@@ -14,7 +14,7 @@ from .config import state
 from .store import DATA
 
 
-BROWSER_APPS = {  # macOS browsers whose address Quota can read: name -> (application name, kind)
+BROWSER_APPS = {  # macOS browsers whose address K(Qu)ota can read: name -> (application name, kind)
     "google chrome": ("Google Chrome", "chromium"), "chrome": ("Google Chrome", "chromium"),
     "microsoft edge": ("Microsoft Edge", "chromium"), "brave browser": ("Brave Browser", "chromium"),
     "chromium": ("Chromium", "chromium"), "vivaldi": ("Vivaldi", "chromium"), "arc": ("Arc", "chromium"),
@@ -163,7 +163,7 @@ def _windows_address(title):
 
 
 def browser_domain(app, title=""):
-    """Website in front of the browser, as a domain (or ''). No extension needed: on a Mac Quota asks Chrome,
+    """Website in front of the browser, as a domain (or ''). No extension needed: on a Mac K(Qu)ota asks Chrome,
     Edge, Brave, Arc or Safari for the address of the front tab; on Windows it reads the address bar. Linux
     can't do this, so no websites are recorded there."""
     a = norm_app(app)

@@ -14,7 +14,7 @@ from quota import assistant, config, offline, server, store
 
 
 class FakeAzure(BaseHTTPRequestHandler):
-    """Stands in for Azure OpenAI. `mode` picks the behaviour; `seen` records what Quota sent."""
+    """Stands in for Azure OpenAI. `mode` picks the behaviour; `seen` records what K(Qu)ota sent."""
     mode = "stream"
     seen = {}
 

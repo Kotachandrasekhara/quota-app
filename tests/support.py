@@ -1,4 +1,4 @@
-"""Shared test setup: a throwaway data folder, set before Quota is imported."""
+"""Shared test setup: a throwaway data folder, set before K(Qu)ota is imported."""
 import os
 import tempfile
 

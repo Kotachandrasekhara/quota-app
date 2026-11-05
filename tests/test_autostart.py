@@ -26,21 +26,21 @@ class AutostartTests(unittest.TestCase):
 
     def test_app_bundle(self):
         with tempfile.TemporaryDirectory() as tmp:
-            dest = os.path.join(tmp, "Quota.app")
+            dest = os.path.join(tmp, "KQuota.app")
             autostart.build_app(dest, make_icns=False)
-            script = os.path.join(dest, "Contents", "MacOS", "Quota")
+            script = os.path.join(dest, "Contents", "MacOS", "KQuota")
             self.assertTrue(os.access(script, os.X_OK))
             text = open(script).read()
             self.assertIn("http://127.0.0.1:%s" % config.PORT, text)
             self.assertIn("com.quota.tracker", text)
             with open(os.path.join(dest, "Contents", "Info.plist"), "rb") as f:
                 info = plistlib.load(f)
-            self.assertEqual(info["CFBundleExecutable"], "Quota")
+            self.assertEqual(info["CFBundleExecutable"], "KQuota")
 
     def test_paths_follow_the_home_folder(self):
         with mock.patch.dict(os.environ, {"HOME": "/Users/someone"}):
             self.assertEqual(autostart.plist_path(), "/Users/someone/Library/LaunchAgents/com.quota.tracker.plist")
-            self.assertEqual(autostart.app_path(), "/Users/someone/Applications/Quota.app")
+            self.assertEqual(autostart.app_path(), "/Users/someone/Applications/KQuota.app")
 
     def test_other_systems_get_instructions(self):
         with mock.patch.object(sys, "platform", "linux"):

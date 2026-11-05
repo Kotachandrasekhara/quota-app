@@ -1,6 +1,6 @@
-"""Ask Quota: a chat about your own time, answered by your Azure OpenAI deployment.
+"""Ask K(Qu)ota: a chat about your own time, answered by your Azure OpenAI deployment.
 
-Quota sends the model a short summary of your last 30 days (never window titles) and the chat so far. Your key and
+K(Qu)ota sends the model a short summary of your last 30 days (never window titles) and the chat so far. Your key and
 endpoint stay in your data file on this computer; the key is never sent to the web page.
 """
 import json
@@ -21,7 +21,7 @@ ALLOW_INSECURE_LOCALHOST = False  # only the tests switch this on, to talk to a 
 MAX_MESSAGES, MAX_CHARS = 12, 3000
 
 SYSTEM_PROMPT = (
-    "You are the assistant inside Quota, a personal time tracker. Quota meters one person's week of computer work in "
+    "You are the assistant inside K(Qu)ota, a personal time tracker. K(Qu)ota meters one person's week of computer work in "
     "tokens (1 token = 1 second of active computer time) against a weekly budget. Answer their questions about their "
     "own time using ONLY the data below. Be concise and concrete: quote numbers and dates, and do the arithmetic "
     "carefully. If the data can't answer a question, say so. Don't judge the person or give HR or medical advice. "
@@ -103,7 +103,7 @@ def save_settings(payload):
 # ---------------------------------------------------------------- talking to Azure
 class _NoRedirect(urllib.request.HTTPRedirectHandler):
     def redirect_request(self, *args, **kwargs):
-        return None  # never follow a redirect: the key must only go where you pointed Quota
+        return None  # never follow a redirect: the key must only go where you pointed K(Qu)ota
 
 
 def _open(messages, stream, timeout):

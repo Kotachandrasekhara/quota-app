@@ -74,7 +74,7 @@ function render(){
 }
 async function poll(){
  try{const r=await fetch("/api/status");if(!r.ok)throw 0;S=await r.json();fetchedAt=Date.now();$("err").textContent="";render();}
- catch(e){$("err").textContent="Couldn't reach Quota. Check that it is still running in your terminal.";}
+ catch(e){$("err").textContent="Couldn't reach K(Qu)ota. Check that it is still running in your terminal.";}
 }
 async function postOff(body){const r=await fetch("/api/days-off",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
  const j=await r.json();if(!r.ok)throw new Error(j.error||"Couldn't save that.");return j;}

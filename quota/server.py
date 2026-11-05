@@ -148,9 +148,9 @@ class Handler(BaseHTTPRequestHandler):
                 result = {"status": compute_status()}
             return self._json(200, result)
         if self.path == "/api/test-notify":
-            notify("Quota test reminder", "If you can see this, reminders work on this computer.")
+            notify("K(Qu)ota test reminder", "If you can see this, reminders work on this computer.")
             return self._json(200, {"ok": True, "platform": platform.system()})
-        if self.path == "/api/pause":  # Private mode: in memory only, so it is off whenever Quota starts
+        if self.path == "/api/pause":  # Private mode: in memory only, so it is off whenever K(Qu)ota starts
             want = payload.get("paused")
             if not isinstance(want, bool):
                 return self._json(400, {"error": "paused must be true or false"})
@@ -255,7 +255,7 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(200, png(512 if path == "/icon.png" else 192), "image/png",
                               {"Cache-Control": "max-age=86400"})
         if path == "/manifest.webmanifest":
-            manifest = {"name": "Quota", "short_name": "Quota", "start_url": "/", "scope": "/", "display": "standalone",
+            manifest = {"name": "K(Qu)ota", "short_name": "K(Qu)ota", "start_url": "/", "scope": "/", "display": "standalone",
                         "background_color": "#f2f2f2", "theme_color": "#6250d6",
                         "icons": [{"src": "/icon-192.png", "sizes": "192x192", "type": "image/png"},
                                   {"src": "/icon.png", "sizes": "512x512", "type": "image/png"}]}

@@ -1,4 +1,4 @@
-# Quota
+# K(Qu)ota
 
 Your week, metered in tokens. **1 token = 1 second of active computer time.**
 
@@ -38,7 +38,7 @@ It uses its own folder (`~/.quota-demo`), so your real data is never touched.
   work, and every 10 minutes once tokens run out.
   They show as a pop-up from your computer and as a banner on the Today page. Settings has a "Send a test reminder" button to check they work on your machine.
 - **Ask (chat with your data):** connect your own **Azure OpenAI** deployment and ask things like "where did my time
-  go this month?" or "plan the rest of my week". See [Ask Quota](#ask-quota-azure-openai) below.
+  go this month?" or "plan the rest of my week". See [Ask K(Qu)ota](#ask-quota-azure-openai) below.
 - **Reports:** download days or apps as CSV, or print / save as PDF from the Dashboards page.
 - **Days off and part-day leave:** use "Add leave or a day off" on the Today page, or Settings, Days off. Pick
   any date (past or coming up) and mark it Holiday, Leave or Sick day, for the whole day or for a few hours
@@ -50,19 +50,19 @@ It uses its own folder (`~/.quota-demo`), so your real data is never touched.
   computer" on the Today page. Enter the date, start time, length and what it was, and pick the category it counts
   as (Meetings by default). It counts as work: it uses tokens, appears in that day's category, apps and time of
   day, and can be removed on Today or in Settings. Don't also log time you were at the computer.
-- **Websites:** Quota records the **domain** of the site in front (for example `docs.google.com`), never the page,
+- **Websites:** K(Qu)ota records the **domain** of the site in front (for example `docs.google.com`), never the page,
   address or title. See "Top websites" on Today and on every dashboard (Reading & documenting too), and download
   them as CSV. The website also helps choose the category (a `github.com` tab counts as Coding). Nothing to
   install, no browser extension:
-  - **Windows:** Quota reads the address bar of Chrome, Edge, Brave or Firefox through the built-in UI Automation
+  - **Windows:** K(Qu)ota reads the address bar of Chrome, Edge, Brave or Firefox through the built-in UI Automation
     (it runs a short PowerShell command). If your organisation blocks PowerShell, no websites are recorded and
     everything else still works.
-  - **macOS:** Quota asks Chrome, Edge, Brave, Arc or Safari for the address of the front tab (macOS asks once to
+  - **macOS:** K(Qu)ota asks Chrome, Edge, Brave, Arc or Safari for the address of the front tab (macOS asks once to
     allow it). Safari private windows can't be told apart, so use Private mode for those.
   - **Linux:** not available.
-  Turn it off in Settings, "What Quota records".
+  Turn it off in Settings, "What K(Qu)ota records".
 - **Private mode:** the switch in the top bar stops all recording (no time, apps or titles) until you turn it off.
-  It is never saved, so it is **always off when Quota starts**. A banner shows while it is on, and Quota reminds
+  It is never saved, so it is **always off when K(Qu)ota starts**. A banner shows while it is on, and K(Qu)ota reminds
   you every 30 minutes (change in Settings).
 - **Time of day:** hours by clock hour, split by category, on every dashboard, like Average by weekday.
   Days recorded before this version are split in proportion to their category totals.
@@ -85,11 +85,11 @@ its name starts with a keyword. You can have up to six categories (for example a
 History is sorted with the rules that applied when it was recorded. Days recorded before categories existed
 are sorted by app name.
 
-## Ask Quota (Azure OpenAI)
+## Ask K(Qu)ota (Azure OpenAI)
 
-1. Open **Settings, Ask Quota** and enter your **endpoint** (`https://your-resource.openai.azure.com`), the
+1. Open **Settings, Ask K(Qu)ota** and enter your **endpoint** (`https://your-resource.openai.azure.com`), the
    **deployment name** of a chat model (for example `gpt-4o`) and your **API key**. You can paste a full request URL
-   instead and Quota picks out the deployment and API version. Select **Test connection**.
+   instead and K(Qu)ota picks out the deployment and API version. Select **Test connection**.
 2. Open **Ask** in the top bar and type a question, or pick a suggestion. Answers stream in as they are written.
 
 What is sent: a short summary of your last 30 days (days, categories, apps, away-from-computer time, weekly totals)
@@ -97,16 +97,16 @@ and the chat so far. **Window titles are never sent**, and website names only if
 "What the assistant can see" on the Ask page to read the exact text. Chats are not saved anywhere.
 
 The key: stored in your data file (`~/.quota/data.json`, readable only by you) and never shown in the browser again.
-To keep it out of the file, set `QUOTA_AI_KEY` (or `AZURE_OPENAI_API_KEY`) before starting Quota instead.
-Quota talks only to the endpoint you enter, over https, and does not follow redirects.
+To keep it out of the file, set `QUOTA_AI_KEY` (or `AZURE_OPENAI_API_KEY`) before starting K(Qu)ota instead.
+K(Qu)ota talks only to the endpoint you enter, over https, and does not follow redirects.
 
 If the test says Python doesn't trust the certificate: on a Mac with python.org Python, run
 "Install Certificates.command" once; on a company network, ask IT for the root certificate.
 
 ## Privacy
 
-Everything stays in `~/.quota/data.json` on your computer. The dashboard only answers requests from your own machine. Nothing is sent anywhere unless you set up Ask Quota, which
-sends a summary to the Azure OpenAI endpoint you enter. By default Quota stores app names and seconds. Browser tab titles are
+Everything stays in `~/.quota/data.json` on your computer. The dashboard only answers requests from your own machine. Nothing is sent anywhere unless you set up Ask K(Qu)ota, which
+sends a summary to the Azure OpenAI endpoint you enter. By default K(Qu)ota stores app names and seconds. Browser tab titles are
 read only to pick a category and are **not saved**. Turn on "Also save window titles" in Settings only if you
 want titles kept. Turn off "Record which apps I use" to keep only category totals.
 
@@ -122,10 +122,10 @@ python -m quota install
 
 This does two things:
 
-1. **Starts Quota by itself every time you log in**, in the background, with no browser tab and no terminal.
-   It is a standard macOS login job (`~/Library/LaunchAgents/com.quota.tracker.plist`) that restarts Quota if it
-   ever stops. Log file: `~/Library/Logs/Quota.log`.
-2. **Adds Quota.app to `~/Applications`**. Open it to start Quota if needed and show the dashboard in its own window
+1. **Starts K(Qu)ota by itself every time you log in**, in the background, with no browser tab and no terminal.
+   It is a standard macOS login job (`~/Library/LaunchAgents/com.quota.tracker.plist`) that restarts K(Qu)ota if it
+   ever stops. Log file: `~/Library/Logs/KQuota.log`.
+2. **Adds KQuota.app to `~/Applications`**. Open it to start K(Qu)ota if needed and show the dashboard in its own window
    (Chrome, Edge or Brave in app mode, otherwise your browser). Drag it to the Dock to keep it there.
 
 Remove both with `python -m quota uninstall` (your data in `~/.quota` stays).
@@ -138,16 +138,16 @@ Notes:
 - Prefer the dashboard to have its own Dock icon? Open http://127.0.0.1:8765 in Chrome, choose
   "Cast, save and share", then "Install page as app" (or Create shortcut, "Open as window"). In Safari 17 or newer,
   use File, "Add to Dock".
-- Quota doesn't put an icon in the menu bar, since that needs an extra package. The Dock app and the browser tab are
+- K(Qu)ota doesn't put an icon in the menu bar, since that needs an extra package. The Dock app and the browser tab are
   the way in.
 - **Windows:** put a shortcut to `pythonw -m quota --no-browser` in `shell:startup`.
   **Linux:** add `python3 -m quota --no-browser` to your startup applications.
 
 ## Upgrading from the four-category version
 
-On first start Quota merges your Reading and Documenting history and rules into **Reading & documenting**, adds the
+On first start K(Qu)ota merges your Reading and Documenting history and rules into **Reading & documenting**, adds the
 newer Coding keywords (all IDEs, GitHub, Azure DevOps, Azure portal) to your Coding rules, and keeps a copy of your
-data as `data.json.before-v2` in the Quota folder. Your own custom keywords are kept.
+data as `data.json.before-v2` in the K(Qu)ota folder. Your own custom keywords are kept.
 
 ## Develop
 

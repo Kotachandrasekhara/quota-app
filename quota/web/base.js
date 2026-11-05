@@ -59,7 +59,7 @@ const catLegend=(host,extra=[])=>legend(host,META.map(c=>({label:c.name,color:ca
 function segBar(host,parts){
  host.replaceChildren();
  const tot=parts.reduce((a,p)=>a+p.value,0);
- if(!tot){host.append(el("div",{class:"empty",text:"No time recorded yet. Quota counts while you type or move the mouse."}));return;}
+ if(!tot){host.append(el("div",{class:"empty",text:"No time recorded yet. K(Qu)ota counts while you type or move the mouse."}));return;}
  const wpx=host.clientWidth||600,bar=el("div",{class:"seg",role:"img","aria-label":"Share of time by category"});
  parts.filter(p=>p.value>0).forEach(p=>{const share=p.value/tot,label=Math.round(share*100)+"%";
   const d=el("div",{class:"s s"+p.slot,style:`flex:${p.value} 1 0;background:${catColor(p.slot)}`,text:(share*wpx>label.length*8+22)?label:""});
@@ -98,7 +98,7 @@ function heatmap(host,days,o){
   ...(o.budget?[el("i",{style:"background:var(--crit);margin-left:10px"}),document.createTextNode("Over budget")]:[]),
   ...(days.some(d=>d.off)?[el("i",{class:"hatchsw",style:"margin-left:10px"}),document.createTextNode("Day off")]:[]));
 }
-/* Private mode: lives in memory on the server, so it is always off when Quota starts */
+/* Private mode: lives in memory on the server, so it is always off when K(Qu)ota starts */
 let PRIV=false;
 function setPriv(v){PRIV=!!v;const b=$("priv"),bar=$("privbar");if(b)b.setAttribute("aria-checked",String(PRIV));if(bar)bar.hidden=!PRIV;}
 async function syncPriv(){try{const j=await (await fetch("/api/pause")).json();if(j.paused!==PRIV){setPriv(j.paused);dispatchEvent(new Event("privchange"));}}catch(e){}}

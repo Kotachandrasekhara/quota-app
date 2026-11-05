@@ -45,4 +45,4 @@ $("chips").replaceChildren(...SUGGEST.map(t=>{const b=el("button",{type:"button"
 $("seen").addEventListener("toggle",async()=>{if(!$("seen").open)return;
  try{const j=await (await fetch("/api/chat/context")).json();$("ctx").textContent=j.text;}catch(e){$("ctx").textContent="Couldn't load the summary.";}});
 (async()=>{try{const a=await (await fetch("/api/ai")).json();$("empty").hidden=a.configured;$("chatbox").hidden=!a.configured;}
- catch(e){say("Couldn't reach Quota. Check that it is still running in your terminal.");}})();
+ catch(e){say("Couldn't reach K(Qu)ota. Check that it is still running in your terminal.");}})();

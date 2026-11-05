@@ -1,6 +1,6 @@
-# How Quota is put together
+# How K(Qu)ota is put together
 
-Quota is a small Python program with no dependencies. One process does three jobs:
+K(Qu)ota is a small Python program with no dependencies. One process does three jobs:
 
 1. **Samples your activity** every 5 seconds (`tracker.py`), and writes it into the data.
 2. **Serves a local web page** at `http://127.0.0.1:8765` (`server.py`) that shows the data.
@@ -23,11 +23,11 @@ Everything is stored in one JSON file, `~/.quota/data.json`. Nothing leaves the 
 | `alerts.py` | The reminder rules. |
 | `tracker.py` | The sampling loop (runs in a background thread). |
 | `reports.py` | History, rankings and CSV export for the Dashboards page. |
-| `assistant.py` | Ask Quota: Azure OpenAI settings, the 30-day summary sent to the model, and the streaming call. |
+| `assistant.py` | Ask K(Qu)ota: Azure OpenAI settings, the 30-day summary sent to the model, and the streaming call. |
 | `settings.py` | Checks and applies the Settings form. |
 | `demo.py` | Sample history for `python -m quota --demo`. |
-| `autostart.py` | `python -m quota install`: the macOS login job (launchd) and Quota.app for the Dock. |
-| `icon.py` | Draws the app icon as a PNG (no image library). Served as `/icon.png` and used for Quota.app. |
+| `autostart.py` | `python -m quota install`: the macOS login job (launchd) and KQuota.app for the Dock. |
+| `icon.py` | Draws the app icon as a PNG (no image library). Served as `/icon.png` and used for KQuota.app. |
 | `web.py` | Builds the pages from the files in `quota/web/`. |
 | `server.py` | The HTTP handler (pages and `/api/...`) and `main()`. |
 
@@ -37,7 +37,7 @@ The dependency order is one-way: `config` <- `store` <- `categories` <- the rest
 
 Plain files, no build step: `shell.html` (frame), `base.css` and `dark-tokens.css`, `base.js` (shared charts and
 helpers), and one `pages/<name>.html` + `.js` pair for Today, Dashboards (`reports`) and Settings. `web.py` joins
-them into one HTML page per route when Quota starts. Edit a file and restart Quota to see the change.
+them into one HTML page per route when K(Qu)ota starts. Edit a file and restart K(Qu)ota to see the change.
 
 ## Data model (`data.json`)
 
@@ -54,7 +54,7 @@ them into one HTML page per route when Quota starts. Edit a file and restart Quo
 | `off`, `part` | Days off, and part-day leave. These change budgets, not usage. |
 | `span`, `alerts` | First and last active time of a day, and which reminders already fired this week. |
 
-Private mode is never stored: it lives in `state` and is off every time Quota starts.
+Private mode is never stored: it lives in `state` and is off every time K(Qu)ota starts.
 
 ## Security notes
 

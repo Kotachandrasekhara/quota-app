@@ -52,7 +52,7 @@ class ApiTests(unittest.TestCase):
         self.assertEqual((r.status, r.read()[:4]), (200, b"\x89PNG"))
         conn.close()
         code, manifest = self.call("GET", "/manifest.webmanifest")
-        self.assertEqual((code, manifest["name"]), (200, "Quota"))
+        self.assertEqual((code, manifest["name"]), (200, "K(Qu)ota"))
         self.assertIn("/manifest.webmanifest", self.call("GET", "/")[1])
 
     def test_other_websites_and_hosts_are_refused(self):
